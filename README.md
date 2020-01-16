@@ -30,11 +30,11 @@ demonstrate the proper data format:
 ```matlab
 % depth matrix
 P = [
-     [200, 195, 190, .., 10, 5]; % profile 1, upcast
-     [5, 10, 15, .., 195, 200 ]; % profile 2, downcast
-     [200, 195, 190, .., 10, 5]; % profile 3, upcast
-     ...
-     [200, 195, 190, .., 10, 5]; % profile N, upcast *or* downcast
+  [200, 195, 190, .., 10, 5]; % profile 1, upcast
+  [5, 10, 15, .., 195, 200 ]; % profile 2, downcast
+  [200, 195, 190, .., 10, 5]; % profile 3, upcast
+  ...
+  [200, 195, 190, .., 10, 5]; % profile N, upcast *or* downcast
 ];
 
 % time matrix, matlab datenum, monotonically increasing row to row
