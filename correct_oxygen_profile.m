@@ -12,6 +12,9 @@
 % Times, In-Air Measurements, and In-Situ Drift. Ocean Science Discussions.
 % http://doi.org/10.5194/os-2016-75
 %
+% Author: Christopher Gordon, chris.gordon@dal.ca
+% Last update: Christopher Gordon, January 28, 2020
+%
 % INPUT
 % -----------------------------------------------------------------------------
 % t: time vector, monotonically increasing, matlab datenum, dims(1, N)
