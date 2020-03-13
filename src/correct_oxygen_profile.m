@@ -12,9 +12,6 @@
 % Times, In-Air Measurements, and In-Situ Drift. Ocean Science Discussions.
 % http://doi.org/10.5194/os-2016-75
 %
-% Author: Christopher Gordon, chris.gordon@dal.ca
-% Last update: Christopher Gordon, January 28, 2020
-%
 % INPUT
 % -----------------------------------------------------------------------------
 % t: time vector, monotonically increasing, matlab datenum, dims(1, N)
@@ -38,7 +35,7 @@ for i=1:N-1
     dt = t_sec(i+1) - t_sec(i); % timestep in seconds
 
     % do the correction using the mean filter, get the mean time
-    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(oxy(i+1) - oxy_a(dt,tau)*oxy(i));
+    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(oxy(i+1) + - oxy_a(dt,tau)*oxy(i));
     mean_time(i) = t_sec(i) + dt/2
 end % for
 

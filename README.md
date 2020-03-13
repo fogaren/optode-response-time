@@ -12,7 +12,7 @@ The main directory contains `calculate_tau.m`, the main function for the end
 user. In the `test` directory there is some limited data and a script (`test.m`)
 for the user to run to get a feel for how the package works and ensure that it
 runs properly on their machine. In the `tools` directory there are functions
-that the mean function employs.
+that the main function employs.
 
 ### Parameters
 
@@ -54,3 +54,8 @@ O = [
 `tools`
 
 `test`
+
+Please note that this code is provided as-is and is subject to periodic updates
+and improvements. If you are interested in contributing to this repository,
+please contact Christopher Gordon at
+[chris.gordon@dal.ca](mailto:chris.gordon@dal.ca).
