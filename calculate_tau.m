@@ -19,18 +19,44 @@
 %
 % OPTIONAL PARAMETERS
 %
+<<<<<<< HEAD
 % zrange: limits of depth to optimize over, default is (25,150)
 % dims(1,2)
 %
 % zres: resolution of depth to be interpolated to to perform comparison,
 % defalult is 1
+=======
+% zlim: lower and upper bounds to perform optimization over, default is (25,175)
+% dims(1, 2)
+%
+% zres: resolution for profiles to be interpolated to, default is 1
+>>>>>>> 4dd54ad76607b7933e0fafd6fc4323b9655743a4
 % scalar
 %
 % OUTPUT
 % -----------------------------------------------------------------------------
 % tau: response time values for each pair of profiles dims(1, M-1)
 
+<<<<<<< HEAD
 [M, N] = size(T)
+=======
+% ------------------------- PARSE OPTIONAL PARAMETERS -------------------------
+% zlim
+index = find(strcmpi(varargin,'zlim'));
+if isempty(index)
+    zlim = [25,175];
+elseif length(varargin >= index+1 && isvector(varargin{index+1}))
+    zlim = varargin{index+1};
+end
+
+% zres
+index = find(strcmpi(varargin,'zres'));
+if isempty(index)
+    zres = 1;
+elseif length(varargin >= index+1 && isscalar(varargin{index+1}))
+    zres = varargin{index+1};
+end
+>>>>>>> 4dd54ad76607b7933e0fafd6fc4323b9655743a4
 
 
 
