@@ -38,7 +38,7 @@ for i=1:N-1
     dt = t_sec(i+1) - t_sec(i); % timestep in seconds
 
     % do the correction using the mean filter, get the mean time
-    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(oxy(i+1) + - oxy_a(dt,tau)*oxy(i));
+    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(oxy(i+1) - oxy_a(dt,tau)*oxy(i));
     mean_time(i) = t_sec(i) + dt/2
 end % for
 
