@@ -1,9 +1,6 @@
 [ tau ] = calculate_tau( T, P, DO, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
-% Author: Christopher Gordon, chris.gordon@dal.ca
-% Last update: Christopher Gordon, January 29, 2020
-%
 % INPUT
 % -----------------------------------------------------------------------------
 % REQUIRED ARGUMENTS
