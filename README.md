@@ -2,7 +2,9 @@
 
 ## Installation
 
-This code can also be downloaded from the [MATLAB File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/).
+This code will be posted to the
+[MATLAB File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/)
+in the future, but for now is only available through github.
 
 ## User Guide
 
@@ -15,6 +17,17 @@ runs properly on their machine. In the `tools` directory there are functions
 that the main function employs.
 
 ### Parameters
+
+The following parameters are optional arguments for `calculate_tau.m`:
+
+- `zlim`: lower and upper depth bounds to perform optimization over,
+default is [25,175], dimensions (1, 2)
+- `zres`: resolution for profiles to be interpolated to, default is 1,
+dimensions(scalar)
+- `tlim`: lower and upper time constant bounds to perform optimization over,
+default is [0,100], dimensions(1, 2)
+- `tres`: resolution to linearly step through `tlim`, default is 1
+dimensions(scalar)
 
 ### Input Data
 
@@ -51,9 +64,11 @@ O = [
 ];
 ```
 
-`tools`
+### Test
 
-`test`
+In the `test` directory, the script `test.m` and data `example_data.mat` should
+run with no other changes required. This gives a very base level example of how
+the functions work and the output.
 
 Please note that this code is provided as-is and is subject to periodic updates
 and improvements. If you are interested in contributing to this repository,
