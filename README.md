@@ -67,7 +67,7 @@ O = [
 ### Test
 
 In the `test` directory, the script `test.m` and data `example_data.mat` should
-run with no other changes required. This gives a very base level example of how
+run with no changes required. This gives a very base level example of how
 the functions work and the output.
 
 Please note that this code is provided as-is and is subject to periodic updates
