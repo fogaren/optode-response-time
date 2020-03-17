@@ -1,4 +1,4 @@
-[ tau ] = calculate_tau( T, P, DO, varargin )
+function [ tau ] = calculate_tau( T, P, DO, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca
@@ -43,7 +43,7 @@ index = find(strcmpi(varargin,'zlim'));
 if isempty(index)
     zlim = [25,175];
     fprintf('No ''zlim'' specified, optimizing between depths 25-175\n')
-elseif length(varargin >= index+1 && isvector(varargin{index+1}))
+elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     zlim = varargin{index+1};
 end
 
@@ -52,7 +52,7 @@ index = find(strcmpi(varargin,'zres'));
 if isempty(index)
     zres = 1;
     fprintf('No ''zres'' specified, interpolating to resolution of 1\n')
-elseif length(varargin >= index+1 && isscalar(varargin{index+1}))
+elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     zres = varargin{index+1};
 end
 
@@ -61,7 +61,7 @@ index = find(strcmpi(varargin,'tlim'));
 if isempty(index)
     tlim = [0,100];
     fprintf('No ''tlim'' specified, optimizing over range of 0-100 seconds\n')
-elseif length(varargin >= index+1 && isvector(varargin{index+1}))
+elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     tlim = varargin{index+1};
 end
 
@@ -70,7 +70,7 @@ index = find(strcmpi(varargin,'tres'));
 if isempty(index)
     tres = 1;
     fprintf('No ''tres'' specified, looking for optimal time constant using 1 second resolution\n')
-elseif length(varargin >= index+1 && isscalar(varargin{index+1}))
+elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     tres = varargin{index+1};
 end
 
@@ -82,7 +82,7 @@ end
 ztarg = zlim(1):zres:zlim(2);
 % time constants to loop through
 time_constants = tlim(1):tres:tlim(2);
-ntau = numel(time_constants)
+ntau = numel(time_constants);
 % allocate array for optimized time constants
 tau = nan(1, M-1);
 
@@ -97,6 +97,10 @@ for m=1:M-1
     time1 = T(m,:);
     time2 = T(m+1,:);
 
+    % filter nan values
+    index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1));
+    index2 = ~(isnan(profile2) | isnan(depth2) | isnan(time2));
+
     % allocate rmsd vector
     rmsd = nan(1, ntau);
 
@@ -105,11 +109,15 @@ for m=1:M-1
         % to be used in correction
         loop_tau = time_constants(k);
         % rmsd of each tau value
-        rmsd(k) = profile_rmsd([profile1;depth1;time1],[profile2;depth2;time2],loop_tau,ztarg)
+        rmsd(k) = profile_rmsd([profile1(index1);depth1(index1);time1(index1)],...
+                               [profile2(index2);depth2(index2);time2(index2)],...
+                               loop_tau,ztarg);
     end % for k=1:ntau
     % optimal time constant is the one with the lowest rmsd
     tau(m) = time_constants(rmsd == nanmin(rmsd));
 end % for m=1:M-1
+
+end  % function
 
 % calculate rmsd between profiles for a give time constant
 function rmsd = profile_rmsd(P1, P2, tau, z);
@@ -117,11 +125,11 @@ function rmsd = profile_rmsd(P1, P2, tau, z);
     corr1 = correct_oxygen_profile(P1(3,:), P1(1,:), tau);
     corr2 = correct_oxygen_profile(P2(3,:), P2(1,:), tau);
     % clean up unique points for interpolation
-    d1, c1 = clean(P1(2,:), corr1);
-    d2, c2 = clean(P2(2,:), corr2);
+    [d1, c1] = clean(P1(2,:), corr1);
+    [d2, c2] = clean(P2(2,:), corr2);
     % interpolated profiles
-    ic1 = interp1(d1, c1, ztarg);
-    ic2 = interp1(d2, c2, ztarg);
+    ic1 = interp1(d1, c1, z);
+    ic2 = interp1(d2, c2, z);
     % rmsd between interp profiles
     rmsd = calc_rmsd(ic1, ic2);
 end % profile_rmsd
@@ -139,7 +147,5 @@ end % clean
 
 % more compact rmsd calculation
 function rmsd = calc_rmsd(x, y)
-    rmsd = sqrt(mean((x - y).^2))
+    rmsd = sqrt(nanmean((x - y).^2));
 end % calc_rmsd
-
-end  % function

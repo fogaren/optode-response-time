@@ -7,7 +7,7 @@ addpath(genpath('../'))
 load('example_data.mat','P','T','DO')
 
 % population of tau values
-tau = calulate_tau(T, P, DO);
+tau = calculate_tau(T, P, DO, 'tres', 5);
 
 % display results
 fprintf('Number of profiles analyzed: %d\n', size(T, 1))

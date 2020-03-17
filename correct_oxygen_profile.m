@@ -1,4 +1,4 @@
-[ DO_out ] = correct_oxygen_profile( t, DO, tau )
+function [ DO_out ] = correct_oxygen_profile( t, DO, tau )
 % correct_oxygen_profile: Correct a single oxygen profile using a given
 % response time (tau). Used by calculate_tau.m but can also be used on its own
 % when tau is known.
@@ -26,7 +26,7 @@
 % DO_out: corrected oxygen profile, dims(1, N)
 
 % pre-allocate arrays
-N = numel(oxy);
+N = numel(DO);
 mean_oxy  = nan(N-1,1);
 mean_time = nan(N-1,1);
 
@@ -38,11 +38,20 @@ for i=1:N-1
     dt = t_sec(i+1) - t_sec(i); % timestep in seconds
 
     % do the correction using the mean filter, get the mean time
-    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(oxy(i+1) - oxy_a(dt,tau)*oxy(i));
-    mean_time(i) = t_sec(i) + dt/2
+    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(DO(i+1) - oxy_a(dt,tau)*DO(i));
+    mean_time(i) = t_sec(i) + dt/2;
 end % for
 
 % interpolate back to original times for output
 DO_out = interp1(mean_time,mean_oxy,t_sec,'linear');
 
 end  % function
+
+function b = oxy_b(dt,tau)
+    inv_b = 1 + 2*(tau/dt);
+    b = 1/inv_b;
+end
+
+function a = oxy_a(dt,tau)
+    a = 1 - 2*oxy_b(dt,tau);
+end
