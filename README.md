@@ -8,14 +8,6 @@ in the future, but for now is only available through github.
 
 ## User Guide
 
-### Structure
-
-The main directory contains `calculate_tau.m`, the main function for the end
-user. In the `test` directory there is some limited data and a script (`test.m`)
-for the user to run to get a feel for how the package works and ensure that it
-runs properly on their machine. In the `tools` directory there are functions
-that the main function employs.
-
 ### Parameters
 
 The following parameters are optional arguments for `calculate_tau.m`:
