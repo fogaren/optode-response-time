@@ -2,7 +2,7 @@
 
 ## Installation
 
-This code is also available on [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time).
+This code is also available on [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time)
 
 ## User Guide
 
@@ -49,7 +49,7 @@ T = [
 ];
 
 % oxygen data
-O = [
+DO = [
   % corresponding oxygen values for each time/depth
 ];
 ```
