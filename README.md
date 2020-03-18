@@ -2,9 +2,7 @@
 
 ## Installation
 
-This code will be posted to the
-[MATLAB File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/)
-in the future, but for now is only available through github.
+This code is also available on [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time).
 
 ## User Guide
 
