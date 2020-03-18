@@ -15,11 +15,11 @@ The following parameters are optional arguments for `calculate_tau.m`:
 - `zlim`: lower and upper depth bounds to perform optimization over,
 default is [25,175], dimensions (1, 2)
 - `zres`: resolution for profiles to be interpolated to, default is 1,
-dimensions(scalar)
+dimensions (scalar)
 - `tlim`: lower and upper time constant bounds to perform optimization over,
-default is [0,100], dimensions(1, 2)
+default is [0,100], dimensions (1, 2)
 - `tres`: resolution to linearly step through `tlim`, default is 1
-dimensions(scalar)
+dimensions (scalar)
 
 ### Input Data
 
