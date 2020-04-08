@@ -1,5 +1,11 @@
 # optode-response-time
 
+The `MATLAB` code included in this repository is designed to determine the
+response time of oxygen optodes deployed on autonomous floats _in-situ_. The
+process requires timestamps for each measurement and a sequence of both up- and
+downcast profiles. For more information on the method see
+_[Gordon et al. (2020)](https://doi.org/10.5194/bg-2020-119)_.
+
 ## Installation
 
 This code is also available on [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time)
@@ -60,7 +66,11 @@ In the `test` directory, the script `test.m` and data `example_data.mat` should
 run with no changes required. This gives a very base level example of how
 the functions work and the output.
 
-Please note that this code is provided as-is and is subject to periodic updates
-and improvements. If you are interested in contributing to this repository,
-please contact Christopher Gordon at
-[chris.gordon@dal.ca](mailto:chris.gordon@dal.ca).
+### Citing and Licensing
+
+Cite as: Gordon, C., Fennel, K., Richards, C., Shay, L. K., and Brewster, J. K.: Can ocean community production and respiration be determined by measuring high-frequency oxygen profiles from autonomous floats?, Biogeosciences Discuss., https://doi.org/10.5194/bg-2020-119, in review, 2020.
+
+Please note that this code is provided as-is under the MIT license and is
+subject to periodic updates and improvements. If you are interested in
+contributing to this repository, please contact Christopher Gordon at
+[Chris.Gordon@dfo-mpo.gc.ca](mailto:Chris.Gordon@dfo-mpo.gc.ca).
