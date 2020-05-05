@@ -12,4 +12,4 @@ tau = calculate_tau(T, P, DO, 'tres', 5);
 % display results
 fprintf('Number of profiles analyzed: %d\n', size(T, 1))
 fprintf('Number of time constants found: %d\n', numel(tau))
-fprintf('Mean response time: %3.1f, standard deviation %3.3f\n', mean(tau), std(tau))
+fprintf('Median response time: %3.1f, standard deviation %3.3f\n', median(tau), std(tau))
