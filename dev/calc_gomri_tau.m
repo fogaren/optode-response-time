@@ -1,23 +1,29 @@
 addpath(genpath('../'))
 
-floatID = 'f7940';
-[S, T, P, DOXY, t] = load_float_data(floatID);
-PDEN = sw_pden(S, T, P) - 1000;
+floats = {'f7939', 'f7940', 'f7941', 'f7942', 'f7943', 'f7944', 'f7945', 'f8081', 'f8082', 'f8083'};
 
-pres_tau = calculate_tau(t, P, DOXY, 'tres', 0.5);
+fprintf('------------------------- RESULTS -------------------------\n\n')
+fprintf('flID\tN\tN_pt\tm_p\tsd_p\tN_rhot\tm_rho\tsd_rho\n')
+fprintf('-----------------------------\n')
 
-fprintf('floatID: %s\n', floatID)
-fprintf('Number of profiles analyzed: %d\n', size(T, 1))
+for ii=numel(floats(1:3))
 
-fprintf('-------------------- PRESSURE RESULTS --------------------\n')
-fprintf('Number of time constants found: %d\n', numel(pres_tau))
-fprintf('Median response time: %3.1f, standard deviation %3.3f\n', median(pres_tau), std(pres_tau))
+    floatID = floats{ii};
+    [S, T, P, DOXY, t] = load_float_data(floatID);
+    PDEN = sw_pden(S, T, P) - 1000;
 
-pden_tau = calculate_tau(t, PDEN, DOXY, 'tres', 0.5, 'zlim', [22,26], 'zres', 0.1);
+    pres_tau = calculate_tau(t, P, DOXY, 'tres', 0.5);
 
-fprintf('-------------------- DENSITY RESULTS --------------------\n')
-fprintf('Number of time constants found: %d\n', numel(pden_tau))
-fprintf('Median response time: %3.1f, standard deviation %3.3f\n', median(pden_tau), std(pden_tau))
+    fprintf('%s\t', floatID)
+    fprintf('%d\t', size(T, 1))
+    fprintf('%d\t', numel(pres_tau))
+    fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
+
+    pden_tau = calculate_tau(t, PDEN, DOXY, 'tres', 0.5, 'zlim', [22,26], 'zres', 0.1);
+
+    fprintf('%d\t', numel(pden_tau))
+    fprintf('%3.1f\t%3.3f\n', median(pden_tau), std(pden_tau))
+end
 
 function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
 
