@@ -42,7 +42,7 @@ function [ tau ] = calculate_tau( T, P, DO, varargin )
 index = find(strcmpi(varargin,'zlim'));
 if isempty(index)
     zlim = [25,175];
-    fprintf('No ''zlim'' specified, optimizing between depths 25-175\n')
+%     fprintf('No ''zlim'' specified, optimizing between depths 25-175\n')
 elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     zlim = varargin{index+1};
 end
@@ -51,7 +51,7 @@ end
 index = find(strcmpi(varargin,'zres'));
 if isempty(index)
     zres = 1;
-    fprintf('No ''zres'' specified, interpolating to resolution of 1\n')
+%     fprintf('No ''zres'' specified, interpolating to resolution of 1\n')
 elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     zres = varargin{index+1};
 end
@@ -60,7 +60,7 @@ end
 index = find(strcmpi(varargin,'tlim'));
 if isempty(index)
     tlim = [0,100];
-    fprintf('No ''tlim'' specified, optimizing over range of 0-100 seconds\n')
+%     fprintf('No ''tlim'' specified, optimizing over range of 0-100 seconds\n')
 elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     tlim = varargin{index+1};
 end
@@ -69,7 +69,7 @@ end
 index = find(strcmpi(varargin,'tres'));
 if isempty(index)
     tres = 1;
-    fprintf('No ''tres'' specified, looking for optimal time constant using 1 second resolution\n')
+%     fprintf('No ''tres'' specified, looking for optimal time constant using 1 second resolution\n')
 elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     tres = varargin{index+1};
 end
