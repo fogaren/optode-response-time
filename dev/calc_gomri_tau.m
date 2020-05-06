@@ -1,3 +1,4 @@
+addpath(genpath('../'))
 
 floatID = 'f7940';
 [S, T, P, DOXY, t] = load_float_data(floatID);
@@ -21,6 +22,7 @@ fprintf('Median response time: %3.1f, standard deviation %3.3f\n', median(pden_t
 function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
 
     files = get_continuous_float_files(floatID);
+    disp(files)
     [M, N] = get_doxy_dims(files);
     Smat = nan(M,N); Tmat = nan(M,N); Pmat = nan(M,N);
     DOXYmat = nan(M,N); tmat = nan(M,N);
@@ -34,22 +36,24 @@ function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
     end
 end
 
-function cont_files = get_continous_float_files(floatID)
+function cont_files = get_continuous_float_files(floatID)
     floats = {'f7939', 'f7940', 'f7941', 'f7942', 'f7943', 'f7944', 'f7945', 'f8081', 'f8082', 'f8083'};
     indices = [20,70,70,66,64,60,58,36,36,32];
     files = get_float_files(floatID);
-    index = indices(find(floats == floatID,1,'first'));
-    cont_files = files{1:index};
+    index = indices(contains(floats,floatID));
+    disp(index)
+    cont_files = files(1:index);
 end
 
 function files = get_float_files(floatID)
-    local_path = ['/Users/ChrisGordon/Desktop/ocean.dal.ca/gomri_data/isotherm.rsmas.miami.edu/data/floatData/',floatID,'/oxy'];
+    local_path = ['/Users/ChrisGordon/Desktop/ocean.dal.ca/gomri_data/isotherm.rsmas.miami.edu/gomri/data/floatData/',floatID,'/oxy'];
     files = glob([local_path,'/*.mat']);
 end
 
 function [M, N] = get_doxy_dims(files)
     M = numel(files);
     N = -1;
+    disp(files)
     for ii=1:M
         fn = files{ii};
         load(fn,'DOXY')
@@ -58,6 +62,7 @@ function [M, N] = get_doxy_dims(files)
         if n > N
             N = n;
         end
+    end
 end
 
 function [S, T, P, DOXY, t, vert] = load_file_data(fn)
