@@ -2,9 +2,9 @@ addpath(genpath('../'))
 
 floatID = 'f7940';
 [S, T, P, DOXY, t] = load_float_data(floatID);
-PDEN = sw_pden(S, T, P) - 1000;
+PDEN = sw_pden(S, T, P, 0) - 1000;
 
-pres_tau = calculate_tau(t, P, DOXY, 'tres', 0.5);
+pres_tau = calculate_tau(t, P, DOXY, 'tres', 0.5, 'tlim', [60, 80]);
 
 fprintf('floatID: %s\n', floatID)
 fprintf('Number of profiles analyzed: %d\n', size(T, 1))
@@ -13,7 +13,7 @@ fprintf('-------------------- PRESSURE RESULTS --------------------\n')
 fprintf('Number of time constants found: %d\n', numel(pres_tau))
 fprintf('Median response time: %3.1f, standard deviation %3.3f\n', median(pres_tau), std(pres_tau))
 
-pden_tau = calculate_tau(t, PDEN, DOXY, 'tres', 0.5, 'zlim', [22,26], 'zres', 0.1);
+pden_tau = calculate_tau(t, PDEN, DOXY, 'tres', 0.5, 'tlim', [60, 80], 'zlim', [22,26], 'zres', 0.1);
 
 fprintf('-------------------- DENSITY RESULTS --------------------\n')
 fprintf('Number of time constants found: %d\n', numel(pden_tau))
