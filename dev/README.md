@@ -17,3 +17,4 @@ the analysis using density as the default depth index rather than pressure.
 ## changelog
 
 May 5, 2020: created this folder and started on script to re-run optimization
+May 6, 2020: ran script successfully for single float, small bug fixes
