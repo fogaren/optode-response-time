@@ -23,6 +23,7 @@ for ii=numel(floats(1:3))
 
     fprintf('%d\t', numel(pden_tau))
     fprintf('%3.1f\t%3.3f\n', median(pden_tau), std(pden_tau))
+    
 end
 
 function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
