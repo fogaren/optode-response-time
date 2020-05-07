@@ -14,8 +14,13 @@ Right now I am working on re-running the results from
 _[Gordon et al. (2020)](https://doi.org/10.5194/bg-2020-119)_, and repeating
 the analysis using density as the default depth index rather than pressure. 
 
+I am also trying to characterize the magnitude of the correction as a function
+of the vertical gradient of the oxygen profile.
+
 ## changelog
 
 May 5, 2020: created this folder and started on script to re-run optimization
 
 May 6, 2020: ran script successfully for single float, small bug fixes
+
+May 7, 2020: started gradient/correction script
