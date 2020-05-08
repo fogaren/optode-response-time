@@ -4,16 +4,16 @@ z = 0:200;
 t = assign_times(0, z, 15);
 tau = 75;
 
-w = 10:40;
+w = 0.01:0.005:0.1
 
 max_grad = nan(size(w));
 max_grad_delta = nan(size(w));
 
 fid = fopen('gradient_correction_data.csv', 'w');
-fprintf(fid, 'max_gradient, correction_delta');
+fprintf(fid, 'max_gradient,correction_delta');
 
 for ii = 1:numel(w)
-    y = hyperbolic_tan(z, 40, 170, w(ii), 100); 
+    y = hyperbolic_tan(z, 40, 170, 1/w(ii), 100); 
     y_corr = correct_oxygen_profile(t, y, tau);
 
     grad = diff(y)./diff(z);
