@@ -4,7 +4,7 @@ z = 0:200;
 t = assign_times(0, z, 15);
 tau = 75;
 
-w = 0.01:0.005:0.1
+w = 0.01:0.005:0.1;
 
 max_grad = nan(size(w));
 max_grad_delta = nan(size(w));
