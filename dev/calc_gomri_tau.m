@@ -55,40 +55,69 @@ fprintf('-------------------------- RESULTS --------------------------\n\n')
 % 
 % end
 
-Wn = 0.9;
-for n=1:3
-    [b,a] = butter(n,Wn);
+% Wn = 0.9;
+% for n=1:3
+%     [b,a] = butter(n,Wn);
 
-    fprintf('------------------------- BUTTERWORTH %d -----------------------\n\n', n)
-    fprintf('flID\tN\tN_pt\tm_p\tsd_p\tN_rhot\tm_rho\tsd_rho\n')
-    fprintf('--------------------------------------------------------------\n')
+%     fprintf('------------------------- BUTTERWORTH %d -----------------------\n\n', n)
+%     fprintf('flID\tN\tN_pt\tm_p\tsd_p\tN_rhot\tm_rho\tsd_rho\n')
+%     fprintf('--------------------------------------------------------------\n')
 
 
 
-    for ii=1:numel(floats)
+%     for ii=1:numel(floats)
 
-        floatID = floats{ii};
-        [S, T, P, DOXY, t] = load_float_data(floatID);
-        DOXY = real(DOXY);
+%         floatID = floats{ii};
+%         [S, T, P, DOXY, t] = load_float_data(floatID);
+%         DOXY = real(DOXY);
         
 
-        f_DOXY = filter(b,a,DOXY,[],2);
+%         f_DOXY = filter(b,a,DOXY,[],2);
 
-        PDEN = real(sw_pden(S, T, P, 0) - 1000);
+%         PDEN = real(sw_pden(S, T, P, 0) - 1000);
 
-        pres_tau = calculate_tau(t, P, f_DOXY, 'tlim', [40,100], 'tres', 0.5);
+%         pres_tau = calculate_tau(t, P, f_DOXY, 'tlim', [40,100], 'tres', 0.5);
 
-        fprintf('%s\t', floatID)
-        fprintf('%d\t', size(T, 1))
-        fprintf('%d\t', numel(pres_tau))
-        fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
+%         fprintf('%s\t', floatID)
+%         fprintf('%d\t', size(T, 1))
+%         fprintf('%d\t', numel(pres_tau))
+%         fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
 
-        pden_tau = calculate_tau(t, PDEN, f_DOXY, 'tlim', [40,100], 'tres', 0.5, 'zlim', [22,26.5], 'zres', 0.1);
+%         pden_tau = calculate_tau(t, PDEN, f_DOXY, 'tlim', [40,100], 'tres', 0.5, 'zlim', [22,26.5], 'zres', 0.1);
 
-        fprintf('%d\t', numel(pden_tau))
-        fprintf('%3.1f\t%3.3f\n', median(pden_tau), std(pden_tau))
+%         fprintf('%d\t', numel(pden_tau))
+%         fprintf('%3.1f\t%3.3f\n', median(pden_tau), std(pden_tau))
 
-    end
+%     end
+% end
+
+fprintf('----------- 1st Order Butterworth, T-dependent tau -----------\n\n')
+fprintf('flID\tN\tN_pt\tm_p\tsd_p\tN_rhot\tm_rho\tsd_rho\n')
+fprintf('--------------------------------------------------------------\n')
+
+n = 1; Wn = 0.9;
+[b,a] = butter(n,wN)
+
+for ii=1:numel(floats)
+    floatID = floats{ii};
+    [S, T, P, DOXY, t] = load_float_data(floatID);
+    DOXY = real(DOXY);
+
+    f_DOXY = filter(b,a,DOXY,[],2);
+
+    PDEN = real(sw_pden(S, T, P, 0) - 1000);
+
+    pres_tau = calculate_tau(t, P, f_DOXY, 'tlim', [40,100], 'tres', 0.5);
+
+    fprintf('%s\t', floatID)
+    fprintf('%d\t', size(T, 1))
+    fprintf('%d\t', numel(pres_tau))
+    fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
+
+    pden_tau = calculate_tau_wTemp(t, PDEN, f_DOXY, 'tlim', [40,100], 'tres', 0.5, 'zlim', [22,26.5], 'zres', 0.1);
+
+    fprintf('%d\t', numel(pden_tau))
+    fprintf('%3.1f\t%3.3f\n', median(pden_tau), std(pden_tau))
 end
 
 function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
