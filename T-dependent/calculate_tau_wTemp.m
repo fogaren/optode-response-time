@@ -48,11 +48,21 @@ function [ thickness ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
 % tau: response time values for each pair of profiles dims(1, M-1)
 
 % ------------------------- PARSE OPTIONAL PARAMETERS -------------------------
+% verbose
+index = find(strcmpi(varargin,'verbose'));
+if isempty(index)
+    verbose = 0;
+elseif length(varargin) >= index+1
+    verbose = varargin{index+1};
+end
+
 % zlim
 index = find(strcmpi(varargin,'zlim'));
 if isempty(index)
     zlim = [25,175];
-    fprintf('No ''zlim'' specified, optimizing between depths 25-175\n')
+    if verbose
+        fprintf('No ''zlim'' specified, optimizing between depths 25-175\n')
+    end
 elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     zlim = varargin{index+1};
 end
@@ -61,7 +71,9 @@ end
 index = find(strcmpi(varargin,'zres'));
 if isempty(index)
     zres = 1;
-    fprintf('No ''zres'' specified, interpolating to resolution of 1\n')
+    if verbose
+        fprintf('No ''zres'' specified, interpolating to resolution of 1\n')
+    end
 elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     zres = varargin{index+1};
 end
@@ -70,7 +82,9 @@ end
 index = find(strcmpi(varargin,'tlim'));
 if isempty(index)
     tlim = [25,150];
-    fprintf('No ''tlim'' specified, optimizing over range of 25-150 micro-m\n')
+    if verbose
+        fprintf('No ''tlim'' specified, optimizing over range of 25-150 micro-m\n')
+    end
 elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     tlim = varargin{index+1};
 end
@@ -79,7 +93,9 @@ end
 index = find(strcmpi(varargin,'tres'));
 if isempty(index)
     tres = 1;
-    fprintf('No ''tres'' specified, looking for optimal thickness using 1 micro-m resolution\n')
+    if verbose
+        fprintf('No ''tres'' specified, looking for optimal thickness using 1 micro-m resolution\n')
+    end
 elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     tres = varargin{index+1};
 end
