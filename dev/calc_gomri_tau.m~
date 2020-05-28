@@ -114,7 +114,7 @@ for ii=1:numel(floats)
     fprintf('%d\t', numel(pres_tau))
     fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
 
-    pden_tau = calculate_tau_wTemp(t, PDEN, f_DOXY, T, 'tlim', [40,100], 'tres', 0.5, 'zlim', [22,26.5], 'zres', 0.1);
+    pden_tau = calculate_tau_wTemp(t, PDEN, f_DOXY, 'tlim', [40,100], 'tres', 0.5, 'zlim', [22,26.5], 'zres', 0.1);
 
     fprintf('%d\t', numel(pden_tau))
     fprintf('%3.1f\t%3.3f\n', median(pden_tau), std(pden_tau))

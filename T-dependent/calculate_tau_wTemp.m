@@ -136,7 +136,7 @@ tau_Tref=interp2(lL,T,tau100,thickness,Tref,'linear');
 end  % function
 
 % calculate rmsd between profiles for a given boundary layer thickness
-function rmsd = profile_rmsd(P1, P2, thickness, z);
+function rmsd = profile_rmsd(P1, P2, thickness, z)
     % correct each profile
     corr1 = correct_oxygen_profile_wTemp(P1(3,:), P1(1,:), P1(4,:), thickness);
     corr2 = correct_oxygen_profile_wTemp(P2(3,:), P2(1,:), P2(4,:), thickness);
