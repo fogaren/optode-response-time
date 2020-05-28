@@ -40,6 +40,9 @@ function [ thickness ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
 % tres: resolition to linearly step through tlim, default is 1
 % dims(scalar)
 %
+% tvec: input vector of tau values, not compatible with tlim and tres inputs
+% dims(1, K) where K is any number of tau values
+%
 % OUTPUT
 % -----------------------------------------------------------------------------
 % tau: response time values for each pair of profiles dims(1, M-1)
@@ -81,14 +84,21 @@ elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     tres = varargin{index+1};
 end
 
+% boundary layer thicknesses to loop through
+time_constants = tlim(1):tres:tlim(2);
+
+% tvec 
+index = find(strcmpi(varargin,'tvec'));
+if length(varargin) >= index+1 && isvector(varargin{index+1})
+    time_constants = varargin{index+1};
+end
+
 % ------------------------ CALCULATE RMSD FOR EACH TAU ------------------------
 
 % dimensions of MTIME, P, DO, and T
 [M, N] = size(DO);
 % depth to interpolate to
 ztarg = zlim(1):zres:zlim(2);
-% boundary layer thicknesses to loop through
-time_constants = tlim(1):tres:tlim(2);
 ntau = numel(time_constants);
 % allocate array for optimized boundary layer thicknesses
 thickness = nan(1, M-1);
