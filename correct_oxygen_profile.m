@@ -45,7 +45,7 @@ end % for
 % interpolate back to original times for output
 DO_out = interp1(mean_time,mean_oxy,t_sec,'linear');
 
-end  % function
+end % function
 
 function b = oxy_b(dt,tau)
     inv_b = 1 + 2*(tau/dt);
