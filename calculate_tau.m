@@ -114,13 +114,13 @@ for m=1:M-1
                                loop_tau,ztarg);
     end % for k=1:ntau
     % optimal time constant is the one with the lowest rmsd
-    tau(m) = time_constants(rmsd == nanmin(rmsd));
+    tau(m) = nanmin(time_constants(rmsd == nanmin(rmsd)));
 end % for m=1:M-1
 
 end  % function
 
 % calculate rmsd between profiles for a give time constant
-function rmsd = profile_rmsd(P1, P2, tau, z);
+function rmsd = profile_rmsd(P1, P2, tau, z)
     % correct each profile
     corr1 = correct_oxygen_profile(P1(3,:), P1(1,:), tau);
     corr2 = correct_oxygen_profile(P2(3,:), P2(1,:), tau);
