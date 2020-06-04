@@ -134,6 +134,7 @@ n = 1; Wn = 0.7;
 floatID = 'f7939';
 [S, T, P, DOXY, t] = load_float_data(floatID);
 DOXY = real(DOXY);
+PDEN = sw_pden(S,T,P,0) - 1000;
 
 FILT_DOXY = nan(size(DOXY));
 for i=1:size(DOXY,1)
@@ -153,15 +154,13 @@ in=dlmread('../T-dependent/T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1
 [lL,T]=meshgrid(lL,T);
 tau_Tref=interp2(lL,T,tau100,lL_opt,Tref,'linear');
 
-[thickness, pden_tau, rmsd] = calculate_tau_wTemp(t, PDEN, FILT_DOXY, T, 'tvec', lL, 'zlim', [22,26.5], 'zres', 0.1);
-
 fid = fopen('rmsd_example.csv','w');
-fprintf(fid,'thickness,tau_20deg,rmsd')
+fprintf(fid,'thickness,tau_20deg,rmsd');
 for ii=1:numel(rmsd)
-    fprintf(fid,'\n')
-    fprintf(fid,'%3.1f,%3.3f,%3.3f',lL_opt(ii),tau_Tref(ii),rmsd(ii))
+    fprintf(fid,'\n');
+    fprintf(fid,'%3.1f,%3.3f,%3.3f',lL_opt(ii),tau_Tref(ii),rmsd(ii));
 end
-fclose(fid)
+fclose(fid);
 
 function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
 

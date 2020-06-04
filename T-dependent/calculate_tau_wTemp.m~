@@ -118,6 +118,7 @@ ztarg = zlim(1):zres:zlim(2);
 ntau = numel(time_constants);
 % allocate array for optimized boundary layer thicknesses
 thickness = nan(1, M-1);
+
 for m=1:M-1
     % oxygen profiles
     profile1 = DO(m,:);
@@ -133,6 +134,11 @@ for m=1:M-1
     temp2 = T(m+1,:);
 
     % filter nan values
+    disp(size(profile1))
+    disp(size(1))
+    disp(size(profile1))
+    disp(size(profile1))
+    
     index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1) | isnan(temp1));
     index2 = ~(isnan(profile2) | isnan(depth2) | isnan(time2) | isnan(temp2));
 
