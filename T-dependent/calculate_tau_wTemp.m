@@ -1,4 +1,4 @@
-function [ thickness ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
+function [ thickness, tau_Tref ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca
@@ -154,7 +154,7 @@ for m=1:M-1
 end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
-Tref=5; % 
+Tref=20; % 
 in=dlmread('T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
 [lL,T]=meshgrid(lL,T);
 tau_Tref=interp2(lL,T,tau100,thickness,Tref,'linear');
