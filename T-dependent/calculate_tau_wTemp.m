@@ -1,4 +1,4 @@
-function [ thickness, tau_Tref ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
+function [ thickness, tau_Tref, rmsd ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca

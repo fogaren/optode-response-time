@@ -100,36 +100,68 @@ n = 1; Wn = 0.7;
 [b,a] = butter(n,Wn);
 
 % in=dlmread('T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
-lL = 100:150;
+% lL = 100:150;
 
-for ii=1:numel(floats)
-    floatID = floats{ii};
-    [S, T, P, DOXY, t] = load_float_data(floatID);
-    DOXY = real(DOXY);
+% for ii=1:numel(floats)
+%     floatID = floats{ii};
+%     [S, T, P, DOXY, t] = load_float_data(floatID);
+%     DOXY = real(DOXY);
     
-    FILT_DOXY = nan(size(DOXY));
-    for i=1:size(DOXY,1)
-        f_DOXY = filter(b,a,[DOXY(i,1)*ones(1,11), DOXY(i,:)],[],2); 
-        f_DOXY = f_DOXY(12:end);
-        FILT_DOXY(i,:) = f_DOXY;
-    end
+%     FILT_DOXY = nan(size(DOXY));
+%     for i=1:size(DOXY,1)
+%         f_DOXY = filter(b,a,[DOXY(i,1)*ones(1,11), DOXY(i,:)],[],2); 
+%         f_DOXY = f_DOXY(12:end);
+%         FILT_DOXY(i,:) = f_DOXY;
+%     end
     
 
-    PDEN = real(sw_pden(S, T, P, 0) - 1000);
+%     PDEN = real(sw_pden(S, T, P, 0) - 1000);
 
-%     pres_tau = calculate_tau_wTemp(t, P, f_DOXY, T, 'tvec', lL);
-% 
-    fprintf('%s\t', floatID)
-    fprintf('%d\t', size(T, 1))
-%     fprintf('%d\t', numel(pres_tau))
-%     fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
+% %     pres_tau = calculate_tau_wTemp(t, P, f_DOXY, T, 'tvec', lL);
+% % 
+%     fprintf('%s\t', floatID)
+%     fprintf('%d\t', size(T, 1))
+% %     fprintf('%d\t', numel(pres_tau))
+% %     fprintf('%3.1f\t%3.3f\t', median(pres_tau), std(pres_tau))
 
-    [thickness, pden_tau] = calculate_tau_wTemp(t, PDEN, FILT_DOXY, T, 'tvec', lL, 'zlim', [22,26.5], 'zres', 0.1);
+%     [thickness, pden_tau] = calculate_tau_wTemp(t, PDEN, FILT_DOXY, T, 'tvec', lL, 'zlim', [22,26.5], 'zres', 0.1);
 
-    fprintf('%d\t', numel(pden_tau))
-    fprintf('%3.1f\t%3.3f\t', median(pden_tau), std(pden_tau))
-    fprintf('%3.1f\t%3.3f\n', median(thickness), std(thickness))
+%     fprintf('%d\t', numel(pden_tau))
+%     fprintf('%3.1f\t%3.3f\t', median(pden_tau), std(pden_tau))
+%     fprintf('%3.1f\t%3.3f\n', median(thickness), std(thickness))
+% end
+
+floatID = 'f7939';
+[S, T, P, DOXY, t] = load_float_data(floatID);
+DOXY = real(DOXY);
+
+FILT_DOXY = nan(size(DOXY));
+for i=1:size(DOXY,1)
+    f_DOXY = filter(b,a,[DOXY(i,1)*ones(1,11), DOXY(i,:)],[],2); 
+    f_DOXY = f_DOXY(12:end);
+    FILT_DOXY(i,:) = f_DOXY;
 end
+
+FILT_DOXY = FILT_DOXY(9:10,:);
+T = T(9:10,:); t = t(9:10,:); PDEN = PDEN(9:10,:);
+lL_opt = 100:200;
+
+[thickness, pden_tau, rmsd] = calculate_tau_wTemp(t, PDEN, FILT_DOXY, T, 'tvec', lL_opt, 'zlim', [22,26.5], 'zres', 0.1);
+
+Tref=20; % 
+in=dlmread('../T-dependent/T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
+[lL,T]=meshgrid(lL,T);
+tau_Tref=interp2(lL,T,tau100,lL_opt,Tref,'linear');
+
+[thickness, pden_tau, rmsd] = calculate_tau_wTemp(t, PDEN, FILT_DOXY, T, 'tvec', lL, 'zlim', [22,26.5], 'zres', 0.1);
+
+fid = fopen('rmsd_example.csv','w');
+fprintf(fid,'thickness,tau_20deg,rmsd')
+for ii=1:numel(rmsd)
+    fprintf(fid,'\n')
+    fprintf(fid,'%3.1f,%3.3f,%3.3f',lL_opt(ii),tau_Tref(ii),rmsd(ii))
+end
+fclose(fid)
 
 function [Smat, Tmat, Pmat, DOXYmat, tmat] = load_float_data(floatID)
 
