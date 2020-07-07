@@ -30,21 +30,9 @@ function [ DO_out ] = correct_oxygen_profile_wTemp( MTIME, DO, TEMP, thickness )
 % pre-allocate arrays
 N = numel(DO);
 mean_oxy  = nan(N-1,1);
-%mean_time = nan(N-1,1);
-%mean_temp = nan(N-1,1);
 
 % convert time to seconds
 t_sec = MTIME*24*60*60;
-%{
-% loop through oxygen data
-for i=1:N-1
-    dt = t_sec(i+1) - t_sec(i); % timestep in seconds
-
-    % do the correction using the mean filter, get the mean time
-    mean_oxy(i)  = (1/(2*oxy_b(dt,tau)))*(DO(i+1) - oxy_a(dt,tau)*DO(i));
-    mean_time(i) = t_sec(i) + dt/2;
-end % for
-%}
 % calculate mean temperature, timestep in seconds, and mean time
 mean_temp=0.5*TEMP(1:end-1)+0.5*TEMP(2:end);
 dt=t_sec(2:end)-t_sec(1:end-1);
@@ -56,7 +44,7 @@ mean_time=t_sec(1:end-1)+dt/2;
 % and diffusivities, while boundary layer thickness, lL, is T-independent
 % -> use lL to add temperature-dependence on tau
 
-% load Bittig et al. 2014 data, supplement to Bittig and Körtzinger 2017
+% load Bittig et al. 2014 data, supplement to Bittig and Kï¿½rtzinger 2017
 in=dlmread('T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
 [lL,T]=meshgrid(lL,T);
 % expand value of boundary layer thickness to proper dimension

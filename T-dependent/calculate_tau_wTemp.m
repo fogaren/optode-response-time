@@ -43,6 +43,9 @@ function [ thickness, tau_Tref, rmsd ] = calculate_tau_wTemp( MTIME, P, DO, T, v
 % tvec: input vector of tau values, not compatible with tlim and tres inputs
 % dims(1, K) where K is any number of tau values
 %
+% Tref: reference temperature at which to report tau value, default is 20 deg C
+% dims(scalar)
+%
 % OUTPUT
 % -----------------------------------------------------------------------------
 % tau: response time values for each pair of profiles dims(1, M-1)
@@ -100,6 +103,17 @@ elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
     tres = varargin{index+1};
 end
 
+% Tref
+index = find(strcmpi(varargin,'tres'));
+if isempty(index)
+    Tref = 20;
+    if verbose
+        fprintf('No ''Tref'' specified, report response time at 20 deg C\n')
+    end
+elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
+    Tref = varargin{index+1};
+end
+
 % boundary layer thicknesses to loop through
 time_constants = tlim(1):tres:tlim(2);
 
@@ -153,7 +167,6 @@ for m=1:M-1
 end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
-Tref=20; % 
 in=dlmread('T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
 [lL,T]=meshgrid(lL,T);
 tau_Tref=interp2(lL,T,tau100,thickness,Tref,'linear');
