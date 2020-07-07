@@ -18,21 +18,18 @@ _[Bittig & Kortzinger (2017)](https://doi.org/10.5194/os-13-1-2017)_.
 
 ## User Guide
 
-### Parameters
+The function `calculate_tau.m` is the main driver here, and calls on
+`correct_oxygen_profile.m` to correct single oxygen profiles. Of course,
+the user may choose to use this sub-function for their own purposes.
 
-The following parameters are optional arguments for `calculate_tau.m`:
-
-- `zlim`: lower and upper depth bounds to perform optimization over,
-default is [25,175], dimensions (1, 2)
-- `zres`: resolution for profiles to be interpolated to, default is 1,
-dimensions (scalar)
-- `tlim`: lower and upper time constant bounds to perform optimization over,
-default is [0,100], dimensions (1, 2), OR, in T-dependent mode, the lower and
-upper bounds of boundary layer thickness
-- `tres`: resolution to linearly step through `tlim`, default is 1
-dimensions (scalar)
-- `Tref`: only in T-dependent mode, reference temperature at which to report
-the derived time constant (scalar)
+`calculate_tau.m` takes in matrices of depth, time, and oxygen data (see below)
+and computes the optimal response time for each pair of profiles. In the
+T-dependent version, the use must also supply a matrix of temperature values.
+The derived time constants (or boundary layer thicknesses in T-dependent)
+can then be used to correct the oxygen measurements for sensor hysteresis.
+Following _[Gordon et al. (2020)](https://doi.org/10.5194/bg-2020-119)_, this
+would be done using the median time constant, but we leave this decision to the
+user.
 
 ### Input Data
 
@@ -67,6 +64,22 @@ DO = [
   % corresponding oxygen values for each time/depth
 ];
 ```
+
+### Parameters
+
+The following parameters are optional arguments for `calculate_tau.m`:
+
+- `zlim`: lower and upper depth bounds to perform optimization over,
+default is [25,175], dimensions (1, 2)
+- `zres`: resolution for profiles to be interpolated to, default is 1,
+dimensions (scalar)
+- `tlim`: lower and upper time constant bounds to perform optimization over,
+default is [0,100], dimensions (1, 2), OR, in T-dependent mode, the lower and
+upper bounds of boundary layer thickness
+- `tres`: resolution to linearly step through `tlim`, default is 1
+dimensions (scalar)
+- `Tref`: only in T-dependent mode, reference temperature at which to report
+the derived time constant (scalar)
 
 ### Test
 
