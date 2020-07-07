@@ -1,14 +1,20 @@
 # optode-response-time
 
+[![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time)
+
 The `MATLAB` code included in this repository is designed to determine the
 response time of oxygen optodes deployed on autonomous floats _in-situ_. The
 process requires timestamps for each measurement and a sequence of both up- and
 downcast profiles. For more information on the method see
 _[Gordon et al. (2020)](https://doi.org/10.5194/bg-2020-119)_.
 
-## Installation
-
-This code is also available on [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time)
+There are two versions of the software, the default and the
+temperature-dependent version. In the default, temperature is
+not taken into consideration. In the T-dependent folder, the optimization
+is for boundary layer thickness, and a temperature profile must be provided
+along with the oxygen profile. The temperature dependent version uses the
+lookup table found in the supplement for
+_[Bittig & Kortzinger (2017)](https://doi.org/10.5194/os-13-1-2017)_.
 
 ## User Guide
 
@@ -21,9 +27,12 @@ default is [25,175], dimensions (1, 2)
 - `zres`: resolution for profiles to be interpolated to, default is 1,
 dimensions (scalar)
 - `tlim`: lower and upper time constant bounds to perform optimization over,
-default is [0,100], dimensions (1, 2)
+default is [0,100], dimensions (1, 2), OR, in T-dependent mode, the lower and
+upper bounds of boundary layer thickness
 - `tres`: resolution to linearly step through `tlim`, default is 1
 dimensions (scalar)
+- `Tref`: only in T-dependent mode, reference temperature at which to report
+the derived time constant (scalar)
 
 ### Input Data
 
@@ -34,7 +43,6 @@ vice-versa). Time should be in `MATLAB` datenum format. Profiles should be
 organized such that time is monotonically increasing (i.e. pressure will be
 monotonically decreasing for an upcast). Below is some made-up data to
 demonstrate the proper data format:
-
 
 ```matlab
 % depth matrix
@@ -68,7 +76,10 @@ the functions work and the output.
 
 ### Citing and Licensing
 
-Cite as: Gordon, C., Fennel, K., Richards, C., Shay, L. K., and Brewster, J. K.: Can ocean community production and respiration be determined by measuring high-frequency oxygen profiles from autonomous floats?, Biogeosciences Discuss., https://doi.org/10.5194/bg-2020-119, in review, 2020.
+Cite as: Gordon, C., Fennel, K., Richards, C., Shay, L. K., and Brewster, J. K.:
+Can ocean community production and respiration be determined by measuring high-frequency
+oxygen profiles from autonomous floats?, Biogeosciences Discuss.,
+<https://doi.org/10.5194/bg-2020-119>, in review, 2020.
 
 Please note that this code is provided as-is under the MIT license and is
 subject to periodic updates and improvements. If you are interested in
