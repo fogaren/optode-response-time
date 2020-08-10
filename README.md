@@ -1,6 +1,6 @@
 # optode-response-time
 
-[![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3975671.svg)](https://doi.org/10.5281/zenodo.3975671)
+[![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/74579-optode-response-time) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3975670.svg)](https://doi.org/10.5281/zenodo.3975670)
 
 The `MATLAB` code included in this repository is designed to determine the
 response time of oxygen optodes deployed on autonomous floats _in-situ_. The
