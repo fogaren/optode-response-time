@@ -1,4 +1,4 @@
-function [ thickness, tau_Tref, rmsd ] = calculate_tau_wTemp( MTIME, P, DO, T, varargin )
+function [ thickness, tau_Tref ] = calculate_tau_wTemp( MTIME, PRES, DOXY, TEMP, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca
@@ -12,13 +12,13 @@ function [ thickness, tau_Tref, rmsd ] = calculate_tau_wTemp( MTIME, P, DO, T, v
 % MTIME: time matrix where each row is a profile, monotonically increasing
 % dims(M, N)
 %
-% P: pressure matrix, should alternate between upcasts and downcasts
+% PRES: pressure matrix, should alternate between upcasts and downcasts
 % dims(M, N)
 %
-% DO: dissolved oxygen matrix with values corresponding to each time/pressure
+% DOXY: dissolved oxygen matrix with values corresponding to each time/pressure
 % dims(M, N)
 %
-% T: Temperature matrix with values corresponding to each time/pressure
+% TEMP: Temperature matrix with values corresponding to each time/pressure
 % dims(M, N)
 %
 % OPTIONAL PARAMETERS
@@ -125,8 +125,8 @@ end
 
 % ------------------------ CALCULATE RMSD FOR EACH TAU ------------------------
 
-% dimensions of MTIME, P, DO, and T
-[M, N] = size(DO);
+% dimensions of MTIME, PRES, DOXY, and TEMP
+[M, N] = size(DOXY);
 % depth to interpolate to
 ztarg = zlim(1):zres:zlim(2);
 ntau = numel(time_constants);
@@ -134,17 +134,17 @@ ntau = numel(time_constants);
 thickness = nan(1, M-1);
 for m=1:M-1
     % oxygen profiles
-    profile1 = DO(m,:);
-    profile2 = DO(m+1,:);
+    profile1 = DOXY(m,:);
+    profile2 = DOXY(m+1,:);
     % depth vectors
-    depth1 = P(m,:);
-    depth2 = P(m+1,:);
+    depth1 = PRES(m,:);
+    depth2 = PRES(m+1,:);
     % time vectors
     time1 = MTIME(m,:);
     time2 = MTIME(m+1,:);
     % temperature vectors
-    temp1 = T(m,:);
-    temp2 = T(m+1,:);
+    temp1 = TEMP(m,:);
+    temp2 = TEMP(m+1,:);
 
     % filter nan values
     index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1) | isnan(temp1));
@@ -168,8 +168,8 @@ end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
 in=dlmread('T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
-[lL,T]=meshgrid(lL,T);
-tau_Tref=interp2(lL,T,tau100,thickness,Tref,'linear');
+[lL,TEMP_LUT]=meshgrid(lL,TEMP_LUT);
+tau_Tref=interp2(lL,TEMP_LUT,tau100,thickness,Tref,'linear');
 
 end  % function
 

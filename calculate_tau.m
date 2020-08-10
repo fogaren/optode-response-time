@@ -1,4 +1,4 @@
-function [ tau ] = calculate_tau( T, P, DO, varargin )
+function [ tau ] = calculate_tau( MTIME, PRES, DOXY, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca
@@ -8,13 +8,13 @@ function [ tau ] = calculate_tau( T, P, DO, varargin )
 % -----------------------------------------------------------------------------
 % REQUIRED ARGUMENTS
 %
-% T: time matrix where each row is a profile, monotonically increasing
+% MTIME: time matrix where each row is a profile, monotonically increasing
 % dims(M, N)
 %
-% P: pressure matrix, should alternate between upcasts and downcasts
+% PRES: pressure matrix, should alternate between upcasts and downcasts
 % dims(M, N)
 %
-% DO: dissolved oxygen matrix with valuues corresponding to each time/pressure
+% DOXY: dissolved oxygen matrix with valuues corresponding to each time/pressure
 % dims(M, N)
 %
 % OPTIONAL PARAMETERS
@@ -76,8 +76,8 @@ end
 
 % ------------------------ CALCULATE RMSD FOR EACH TAU ------------------------
 
-% dimensions of T, P, and DO
-[M, N] = size(DO);
+% dimensions of TEMP, PRES, and DOXY
+[M, N] = size(DOXY);
 % depth to interpolate to
 ztarg = zlim(1):zres:zlim(2);
 % time constants to loop through
@@ -88,14 +88,14 @@ tau = nan(1, M-1);
 
 for m=1:M-1
     % oxygen profiles
-    profile1 = DO(m,:);
-    profile2 = DO(m+1,:);
+    profile1 = DOXY(m,:);
+    profile2 = DOXY(m+1,:);
     % depth vectors
-    depth1 = P(m,:);
-    depth2 = P(m+1,:);
+    depth1 = PRES(m,:);
+    depth2 = PRES(m+1,:);
     % time vectors
-    time1 = T(m,:);
-    time2 = T(m+1,:);
+    time1 = TEMP(m,:);
+    time2 = TEMP(m+1,:);
 
     % filter nan values
     index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1));
