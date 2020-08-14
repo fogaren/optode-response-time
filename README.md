@@ -126,10 +126,10 @@ the functions work and the output.
 
 ### Citing and Licensing
 
-Cite as: Gordon, C., Fennel, K., Richards, C., Shay, L. K., and Brewster, J. K.:
-Can ocean community production and respiration be determined by measuring high-frequency
-oxygen profiles from autonomous floats?, Biogeosciences Discuss.,
-<https://doi.org/10.5194/bg-2020-119>, in review, 2020.
+Cite as: Gordon, C., Fennel, K., Richards, C., Shay, L. K., & Brewster, J. K.
+(2020). Can ocean community production and respiration be determined by
+measuring high-frequency oxygen profiles from autonomous floats?
+Biogeosciences, 17(15), 4119–4134. <https://doi.org/10.5194/bg-17-4119-2020>
 
 Please note that this code is provided as-is under the MIT license and is
 subject to periodic updates and improvements. If you are interested in
