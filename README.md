@@ -133,5 +133,5 @@ Biogeosciences, 17(15), 4119–4134. <https://doi.org/10.5194/bg-17-4119-2020>
 
 Please note that this code is provided as-is under the MIT license and is
 subject to periodic updates and improvements. If you are interested in
-contributing to this repository, please contact Christopher Gordon at
-[Chris.Gordon@dfo-mpo.gc.ca](mailto:Chris.Gordon@dfo-mpo.gc.ca).
+contributing to this repository, create a pull request or contact Christopher
+Gordon at [Chris.Gordon@dfo-mpo.gc.ca](mailto:Chris.Gordon@dfo-mpo.gc.ca).
