@@ -94,8 +94,8 @@ for m=1:M-1
     depth1 = PRES(m,:);
     depth2 = PRES(m+1,:);
     % time vectors
-    time1 = TEMP(m,:);
-    time2 = TEMP(m+1,:);
+    time1 = MTIME(m,:);
+    time2 = MTIME(m+1,:);
 
     % filter nan values
     index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1));
