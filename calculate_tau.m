@@ -1,4 +1,4 @@
-function [ tau ] = calculate_tau( MTIME, PRES, DOXY, varargin )
+function [ tau, time_constants, rmsd] = calculate_tau( MTIME, PRES, DOXY, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca
@@ -85,6 +85,8 @@ time_constants = tlim(1):tres:tlim(2);
 ntau = numel(time_constants);
 % allocate array for optimized time constants
 tau = nan(1, M-1);
+% allocate rmsd vector
+rmsd = nan(M-1, ntau);
 
 for m=1:M-1
     % oxygen profiles
@@ -94,6 +96,8 @@ for m=1:M-1
     depth1 = PRES(m,:);
     depth2 = PRES(m+1,:);
     % time vectors
+%     time1 = TEMP(m,:);
+%     time2 = TEMP(m+1,:);
     time1 = MTIME(m,:);
     time2 = MTIME(m+1,:);
 
@@ -101,26 +105,24 @@ for m=1:M-1
     index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1));
     index2 = ~(isnan(profile2) | isnan(depth2) | isnan(time2));
 
-    % allocate rmsd vector
-    rmsd = nan(1, ntau);
-
     % loop through range of tau values
     for k=1:ntau
         % to be used in correction
         loop_tau = time_constants(k);
         % rmsd of each tau value
-        rmsd(k) = profile_rmsd([profile1(index1);depth1(index1);time1(index1)],...
+        [rmsd(m,k)] = profile_rmsd([profile1(index1);depth1(index1);time1(index1)],...
                                [profile2(index2);depth2(index2);time2(index2)],...
                                loop_tau,ztarg);
     end % for k=1:ntau
     % optimal time constant is the one with the lowest rmsd
-    tau(m) = nanmin(time_constants(rmsd == nanmin(rmsd)));
+    %tau(m) = nanmin(time_constants(rmsd == nanmin(rmsd(m,:))));
+    tau(m) = nanmin(time_constants(rmsd(m,:) == nanmin(rmsd(m,:))));
 end % for m=1:M-1
 
 end  % function
 
 % calculate rmsd between profiles for a give time constant
-function rmsd = profile_rmsd(P1, P2, tau, z)
+function [rmsd] = profile_rmsd(P1, P2, tau, z)
     % correct each profile
     corr1 = correct_oxygen_profile(P1(3,:), P1(1,:), tau);
     corr2 = correct_oxygen_profile(P2(3,:), P2(1,:), tau);
@@ -144,7 +146,7 @@ function [ux, y_out] = clean(x, y)
         y_out(ii) = nanmean(y(rept));
     end % for ii=1:length(ux)
 end % clean
-
+% 
 % more compact rmsd calculation
 function rmsd = calc_rmsd(x, y)
     rmsd = sqrt(nanmean((x - y).^2));
