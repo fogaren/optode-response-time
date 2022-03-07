@@ -1,5 +1,5 @@
 %% Tau Correction based on Gordon 2020 for G453 2018
-%% 
+%
 % * Used casts from Glider 453 (June 12-13 2018)
 % * Compares upcasts and downcasts to calculate an offset for the oxygen sensor 
 % based on the offset that minimizes the RMSD for lags from 1:100 seconds 
@@ -11,7 +11,7 @@
 % * Then OOI usually does only upcasts or only downcasts
 % * Could make recommendation on which is better 
 
-cd('G:\My Drive\Matlab_work\BC\Gliders\Gliders\Data\From_Roo')
+gpath('Gliders\Data\From_Roo')
 load G453.mat
 
 glider = G453;
@@ -27,16 +27,15 @@ datetick('x','keepticks','keeplimits')
 ylabel('Depth (m)')
 title('Glider 453, oxygen saturation (6/12-6/13/2018)')
 
-%% 
+
 % * Hard coded into necessary format for tau_correction code and saved as TauTest_G453.mat
 % * Was really annoying to code this format, must be a more automated way
 
-cd('G:\My Drive\Matlab_work\BC')
-run('GeneralSettings.m')
-cd('G:\My Drive\Matlab_work\BC\Gliders\Gliders\Data')
+run('GeneralSettings.m') % For colors
+
+gpath('Gliders\Data\From_Kristen')
 load TauTest_G453.mat % downcasts are odd rows, upcasts are even rows
-addpath('G:\My Drive\Matlab_work\BC\Gliders\OOI_Irminger\optode-response-time-Gordon-2020')
-%%
+
 figure
 plot(DO(1,:),pres(1,:),'Color',cyan)
 hold on
@@ -49,13 +48,13 @@ plot(DO(6,:),pres(6,:),'Color','red')
 axis ij
 ylim([0 150])
 legend('Downcast','Upcast','Location','SE')
-%% 
+
 % * Can change z limits of water column
 % * I edited Gordon's calculate_tau.m to output the RMSD so that each errors 
 % from upcast/downcast tau corrections could be plotted and visually compared 
 
 [ tau, time_constants, rmsd ] = calculate_tau( t, pres, DO, 'zlim',[0 250]);
-%%
+
 tau % in seconds 
 tau_average = nanmean(tau)
 
@@ -64,7 +63,7 @@ plot(time_constants,rmsd,'.')
 xlabel('\tau (sec)')
 ylabel('RMSD (%)')
 title('Tau Correction (Gordon et al 2020)')
-%%
+
 % Profiles to compare 2 and 3
 figure
 subplot(1,2,1)
@@ -82,7 +81,7 @@ plot(DO(5,:),pres(5,:),'Color',navy)
 axis ij
 ylim([0 250])
 legend('Upcast','Downcast','Location','SE')
-%%
+
 t23 = t(2:3,:); pres23 = pres(2:3,:); DO23 = DO(2:3,:);
 [ tau23, time_constants23, rmsd23 ] = calculate_tau( t23, pres23, DO23, 'zlim',[0 250]);
 
@@ -101,7 +100,7 @@ t45 = t(4:5,:); pres45 = pres(4:5,:); DO45 = DO(4:5,:);
     ind5 = ~(isnan(DO(5,:)) | isnan(pres(5,:)) | isnan(t(5,:)));
 [ DO4corr ] = correct_oxygen_profile( t(4,ind4), DO(4,ind4), 50);
 [ DO5corr ] = correct_oxygen_profile( t(5,ind5), DO(5,ind5), 50);
-%%
+
 tau23
 tau45
 
