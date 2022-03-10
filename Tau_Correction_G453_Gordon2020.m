@@ -22,12 +22,12 @@ figure
 scatter(glider.daten(paired), glider.depth_interp(paired), [], glider.oxygen_saturation(paired),'filled'); colorbar; caxis([85 100])
 set(gca,'YDir','reverse'); 
 xlim([datenum(2018,6,12,19,15,0) datenum(2018,6,13,08,40,0)])
-ylim([0 1000])
+ylim([0 200])
 datetick('x','keepticks','keeplimits')
 ylabel('Depth (m)')
 title('Glider 453, oxygen saturation (6/12-6/13/2018)')
 
-
+%%
 % * Hard coded into necessary format for tau_correction code and saved as TauTest_G453.mat
 % * Was really annoying to code this format, must be a more automated way
 
@@ -48,6 +48,7 @@ plot(DO(6,:),pres(6,:),'Color','red')
 axis ij
 ylim([0 150])
 legend('Downcast','Upcast','Location','SE')
+title('Glider 453, oxygen saturation (6/12-6/13/2018)')
 
 % * Can change z limits of water column
 % * I edited Gordon's calculate_tau.m to output the RMSD so that each errors 
@@ -73,6 +74,7 @@ plot(DO(3,:),pres(3,:),'Color',blue)
 axis ij
 ylim([0 250])
 legend('Upcast','Downcast','Location','SE')
+title('Compare 2 to 3')
 
 subplot(1,2,2) % 4 and 5
 plot(DO(4,:),pres(4,:),'Color',maroon)
@@ -81,7 +83,8 @@ plot(DO(5,:),pres(5,:),'Color',navy)
 axis ij
 ylim([0 250])
 legend('Upcast','Downcast','Location','SE')
-
+title('Compare 4 to 5')
+%%
 t23 = t(2:3,:); pres23 = pres(2:3,:); DO23 = DO(2:3,:);
 [ tau23, time_constants23, rmsd23 ] = calculate_tau( t23, pres23, DO23, 'zlim',[0 250]);
 
@@ -113,6 +116,7 @@ plot(DO2corr,pres(2,ind2),'Color',maroon,'Linewidth',1.5)
 plot(DO3corr,pres(3,ind3),'Color',navy,'Linewidth',1.5)
 axis ij
 ylim([0 250])
+title('Compare 2 to 3')
 
 subplot(1,2,2)
 plot(DO(4,:),pres(4,:),'Color',red)
@@ -123,6 +127,7 @@ plot(DO5corr,pres(5,ind5),'Color',navy,'Linewidth',1.5)
 axis ij
 ylim([0 250])
 legend('Upcast','Downcast','UpCorr','DownCorr','Location','SE')
+title('Compare 4 to 5')
 
 figure
 plot(DO2corr,pres(2,ind2),'Color',red,'Linewidth',1.5)
@@ -130,12 +135,16 @@ hold on
 plot(DO3corr,pres(3,ind3),'Color',blue,'Linewidth',1.5)
 plot(DO4corr,pres(4,ind4),'Color',maroon,'Linewidth',1.5)
 plot(DO5corr,pres(5,ind5),'Color',navy,'Linewidth',1.5)
-% plot(DO(2,:),pres(2,:),'.','Color',red)
-% hold on
-% plot(DO(3,:),pres(3,:),'.','Color',blue)
-% plot(DO(4,:),pres(4,:),'.','Color',maroon)
-% hold on
-% plot(DO(5,:),pres(5,:),'.','Color',navy)
-
+title('Corrected profiles')
 axis ij
 ylim([10 250])
+%%
+figure 
+%plot(glider.daten(paired), glider.depth_interp(paired), 'k.'); hold on;
+scatter(glider.daten(paired), glider.depth_interp(paired), [], glider.oxygen_saturation(paired),'filled'); colorbar; caxis([85 100])
+set(gca,'YDir','reverse'); 
+xlim([datenum(2018,6,12,19,15,0) datenum(2018,6,13,08,40,0)])
+ylim([0 200])
+datetick('x','keepticks','keeplimits')
+ylabel('Depth (m)')
+title('Glider 453, oxygen saturation (6/12-6/13/2018)')
