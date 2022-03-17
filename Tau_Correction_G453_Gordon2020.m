@@ -11,7 +11,7 @@
 % * Then OOI usually does only upcasts or only downcasts
 % * Could make recommendation on which is better 
 
-gpath('Gliders\Data\From_Roo')
+gpath('Data_Files\From_Roo') 
 load G453.mat
 
 glider = G453;
@@ -33,7 +33,7 @@ title('Glider 453, oxygen saturation (6/12-6/13/2018)')
 
 run('GeneralSettings.m') % For colors
 
-gpath('Gliders\Data\From_Kristen')
+gpath('Data_Files\From_Kristen')
 load TauTest_G453.mat % downcasts are odd rows, upcasts are even rows
 
 figure
