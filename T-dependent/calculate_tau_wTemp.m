@@ -1,4 +1,4 @@
-function [ thickness, tau_Tref ] = calculate_tau_wTemp( MTIME, PRES, DOXY, TEMP, varargin )
+function [ thickness, tau_Tref , thickness_constants, rmsd] = calculate_tau_wTemp( MTIME, PRES, DOXY, TEMP, varargin )
 % calculate_tau: calculate the response time for each pair of profiles
 %
 % Author: Christopher Gordon, chris.gordon@dal.ca
@@ -31,11 +31,11 @@ function [ thickness, tau_Tref ] = calculate_tau_wTemp( MTIME, PRES, DOXY, TEMP,
 % dims(scalar)
 %
 % tlim: lower and upper empirical boundary layer thickness bounds to perform optimization over,
-% default is [0,100]
+% default is [0,150] in micro-m
 % dims(1, 2)
 %
 % thickness can easily be converted to tau if temperature is specified
-% (e.g., 5 degC or 20 degC) (see l. 131-134)
+% (e.g., 5 degC or 20 degC) (see l. 176-179)
 %
 % tres: resolition to linearly step through tlim, default is 1
 % dims(scalar)
@@ -48,8 +48,16 @@ function [ thickness, tau_Tref ] = calculate_tau_wTemp( MTIME, PRES, DOXY, TEMP,
 %
 % OUTPUT
 % -----------------------------------------------------------------------------
-% tau: response time values for each pair of profiles dims(1, M-1)
-
+% thickness: boundary layer thickness values for each pair of profiles dims(1, M-1)
+%
+% tau_Tref: thickness values converted to a tau at temperature Tref
+%
+% thickness_constants: boundary layer thickness values used for optimization
+% (specified by tlim and tres)
+%
+% rmsd: output calculated rmsd values at each of thickness_constants for
+% each pair of profiles
+% 
 % ------------------------- PARSE OPTIONAL PARAMETERS -------------------------
 % verbose
 index = find(strcmpi(varargin,'verbose'));
@@ -84,9 +92,9 @@ end
 % tlim
 index = find(strcmpi(varargin,'tlim'));
 if isempty(index)
-    tlim = [25,150];
+    tlim = [0,150];
     if verbose
-        fprintf('No ''tlim'' specified, optimizing over range of 25-150 micro-m\n')
+        fprintf('No ''tlim'' specified, optimizing over range of 0-150 micro-m\n')
     end
 elseif length(varargin) >= index+1 && isvector(varargin{index+1})
     tlim = varargin{index+1};
@@ -115,13 +123,13 @@ elseif length(varargin) >= index+1 && isscalar(varargin{index+1})
 end
 
 % boundary layer thicknesses to loop through
-time_constants = tlim(1):tres:tlim(2);
+thickness_constants = tlim(1):tres:tlim(2);
 
-% tvec 
-index = find(strcmpi(varargin,'tvec'));
-if length(varargin) >= index+1 && isvector(varargin{index+1})
-    time_constants = varargin{index+1};
-end
+% % tvec - commented out b/c doesn't work
+% index = find(strcmpi(varargin,'tvec'));
+% if length(varargin) >= index+1 && isvector(varargin{index+1})
+%     thickness_constants = varargin{index+1};
+% end
 
 % ------------------------ CALCULATE RMSD FOR EACH TAU ------------------------
 
@@ -129,9 +137,11 @@ end
 [M, N] = size(DOXY);
 % depth to interpolate to
 ztarg = zlim(1):zres:zlim(2);
-ntau = numel(time_constants);
+ntau = numel(thickness_constants);
 % allocate array for optimized boundary layer thicknesses
 thickness = nan(1, M-1);
+% allocate array for rmsd output
+rmsd = nan(M-1, ntau);
 for m=1:M-1
     % oxygen profiles
     profile1 = DOXY(m,:);
@@ -150,31 +160,28 @@ for m=1:M-1
     index1 = ~(isnan(profile1) | isnan(depth1) | isnan(time1) | isnan(temp1));
     index2 = ~(isnan(profile2) | isnan(depth2) | isnan(time2) | isnan(temp2));
 
-    % allocate rmsd vector
-    rmsd = nan(1, ntau);
-
     % loop through range of thickness values
     for k=1:ntau
         % to be used in correction
-        loop_thickness = time_constants(k);
+        loop_thickness = thickness_constants(k);
         % rmsd of each thickness value
-        rmsd(k) = profile_rmsd([profile1(index1);depth1(index1);time1(index1);temp1(index1)],...
+        rmsd(m,k) = profile_rmsd([profile1(index1);depth1(index1);time1(index1);temp1(index1)],...
                                [profile2(index2);depth2(index2);time2(index2);temp2(index2)],...
                                loop_thickness,ztarg);
     end % for k=1:ntau
     % optimal boundary layer thickness is the one with the lowest rmsd
-    thickness(m) = time_constants(rmsd == nanmin(rmsd));
+    thickness(m) = thickness_constants(rmsd(m,:) == nanmin(rmsd(m,:)));
 end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
-in=dlmread('T_lL_tau_3830_4330.dat'); lL=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
-[lL,TEMP_LUT]=meshgrid(lL,TEMP_LUT);
+in=dlmread('T_lL_tau_3830_4330.dat'); L=in(1,2:end);T=in(2:end,1);tau100=in(2:end,2:end); clear in
+[lL,TEMP_LUT]=meshgrid(L,T);
 tau_Tref=interp2(lL,TEMP_LUT,tau100,thickness,Tref,'linear');
 
 end  % function
 
 % calculate rmsd between profiles for a given boundary layer thickness
-function rmsd = profile_rmsd(P1, P2, thickness, z)
+function [rmsd] = profile_rmsd(P1, P2, thickness, z)
     % correct each profile
     corr1 = correct_oxygen_profile_wTemp(P1(3,:), P1(1,:), P1(4,:), thickness);
     corr2 = correct_oxygen_profile_wTemp(P2(3,:), P2(1,:), P2(4,:), thickness);
