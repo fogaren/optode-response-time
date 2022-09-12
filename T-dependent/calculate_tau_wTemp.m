@@ -170,7 +170,12 @@ for m=1:M-1
                                loop_thickness,ztarg);
     end % for k=1:ntau
     % optimal boundary layer thickness is the one with the lowest rmsd
-    thickness(m) = thickness_constants(rmsd(m,:) == nanmin(rmsd(m,:)));
+    try
+        thickness(m) = thickness_constants(rmsd(m,:) == nanmin(rmsd(m,:)));
+    catch
+        thickness(m) = NaN;
+    end
+    m
 end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
