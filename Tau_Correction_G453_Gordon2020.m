@@ -13,20 +13,37 @@
 
 gpath('Data_Files\From_Roo') 
 load G453.mat
-
+%%
 glider = G453;
 paired = find(glider.daten > datenum(2018,6,12,19,22,0) & glider.daten < datenum(2018,6,13,8,39,0) & glider.profile_direction ~=0);
+paired = find(glider.daten > datenum(2018,6,12,19,22,0) & glider.daten < datenum(2018,6,12,23,39,0) & glider.profile_direction ==+1);
 
 figure 
 %plot(glider.daten(paired), glider.depth_interp(paired), 'k.'); hold on;
-scatter(glider.daten(paired), glider.depth_interp(paired), [], glider.oxygen_saturation(paired),'filled'); colorbar; caxis([85 100])
+scatter(glider.daten(paired), glider.depth_interp(paired), [], glider.oxygen_saturation(paired),'filled'); colorbar; %caxis([85 100])
 set(gca,'YDir','reverse'); 
 xlim([datenum(2018,6,12,19,15,0) datenum(2018,6,13,08,40,0)])
 ylim([0 200])
 datetick('x','keepticks','keeplimits')
 ylabel('Depth (m)')
 title('Glider 453, oxygen saturation (6/12-6/13/2018)')
+%%
+figure 
+%plot(glider.daten(paired), glider.depth_interp(paired), 'k.'); hold on;
+scatter(glider.daten(paired), glider.depth_interp(paired), [], glider.oxygen_concentration(paired),'filled'); colorbar; %caxis([85 100])
+set(gca,'YDir','reverse'); 
+xlim([datenum(2018,6,12,19,15,0) datenum(2018,6,13,08,40,0)])
+ylim([0 200])
+datetick('x','keepticks','keeplimits')
+ylabel('Depth (m)')
+title('Glider 453, oxygen (6/12-6/13/2018)')
+%%
+figure
+plot(glider.oxygen_concentration(paired),glider.depth_interp(paired),'.')
+axis ij
 
+testDO = glider.oxygen_concentration(paired);
+testdepth = glider.depth_interp(paired);
 %%
 % * Hard coded into necessary format for tau_correction code and saved as TauTest_G453.mat
 % * Was really annoying to code this format, must be a more automated way
@@ -34,6 +51,7 @@ title('Glider 453, oxygen saturation (6/12-6/13/2018)')
 run('GeneralSettings.m') % For colors
 
 gpath('Data_Files\From_Kristen')
+%%
 load TauTest_G453.mat % downcasts are odd rows, upcasts are even rows
 
 figure
