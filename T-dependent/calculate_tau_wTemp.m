@@ -132,6 +132,7 @@ thickness_constants = tlim(1):tres:tlim(2);
 % end
 
 % ------------------------ CALCULATE RMSD FOR EACH TAU ------------------------
+%%
 
 % dimensions of MTIME, PRES, DOXY, and TEMP
 [M, N] = size(DOXY);
@@ -175,7 +176,7 @@ for m=1:M-1
     catch
         thickness(m) = NaN;
     end
-    m
+    Tref
 end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
