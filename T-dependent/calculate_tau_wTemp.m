@@ -176,7 +176,7 @@ for m=1:M-1
     catch
         thickness(m) = NaN;
     end
-    Tref
+%     Tref % Commented out  KF 1/30/2023
 end % for m=1:M-1
 
 % convert thickness to more graspable tau at a specified temperature
